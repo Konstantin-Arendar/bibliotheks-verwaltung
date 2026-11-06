@@ -32,38 +32,27 @@ private BibliothekUseCase startMenu() {
 		
 		while(true) {
 			
-			int i = 0;
-			i++;
-			System.out.println("Das ist i: "+ i);
-			System.out.println("(m): Mitarbeiter," + "\n" + "(k) Kunde" + "\n" + "(a) Ausschalten" );
+			System.out.println("Willkommen!");
+			System.out.println("(m): Mitarbeiter" + "\n" + "(k): Kunde" + "\n" + "(a): Ausschalten" );
 			String auswahl = scan.nextLine();
-			System.out.println("Value von auswahl: "+ auswahl);
-		
-			if (auswahl.equals("m")) {		//statt auswahl == "m", da "==" referenz auf Objekt und nicht inhalt prüft
-				
-				
-				return BibliothekUseCase.MITARBEITER_MENU;
-				
-			}	
-				
-			if(auswahl.equals("k")){
-				
-				return BibliothekUseCase.GAST_MENU;
-			}
 			
-			if(auswahl.equals("a")) {
+			
+			switch (auswahl) {
+				case "m" -> {
+					return BibliothekUseCase.MITARBEITER_MENU;
+				}
 				
-				System.out.println("Auf Wiedersehen!");
-				return BibliothekUseCase.BEENDEN;
+				case "g" -> {
+					return BibliothekUseCase.GAST_MENU;
+				}
 				
-						
-					}else {
-						System.out.println("Bitte m, k oder a!");   
-					}
-					
+				case "a" -> {
+					System.out.println("Auf Wiedersehen!");
+					return BibliothekUseCase.BEENDEN;
+				}
+				
+				default -> System.out.println("Bitte m, g oder a!");  
 			}
-		
+		}
 	}
-
-
 }

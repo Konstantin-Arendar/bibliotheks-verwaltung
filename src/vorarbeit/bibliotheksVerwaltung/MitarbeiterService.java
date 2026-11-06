@@ -16,7 +16,7 @@ public class MitarbeiterService {
 		this.scan = scan;
 	}
 	
-	public void start(String auswahl) {
+	public MitarbeiterMenuCase start(String auswahl) {
 		
 		if (auswahl.equals("1")){
 			mitarbeiterAnmeldung();
@@ -25,6 +25,7 @@ public class MitarbeiterService {
 		if (auswahl.equals("2")) {
 			mitarbeiterRegistrierung();
 		}
+		return null;
 	}
 	
 	private MitarbeiterService mitarbeiterRegistrierung() {

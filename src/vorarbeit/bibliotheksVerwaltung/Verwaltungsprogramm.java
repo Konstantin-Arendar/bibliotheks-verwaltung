@@ -21,91 +21,99 @@ public class Verwaltungsprogramm {
 	private final StartMenu start = new StartMenu(scan);
 	private final Gast gast = new Gast(scan);
 	
+	
 
 	public BibliothekUseCase anwendung() {
-	
-		while(true) {
-			
-			int a = 0;
-			a++;
-			System.out.println("Das ist der "+ a + " Loop im Anwendungsprogramm.");
-			switch (status) {
-				case START_MENU:
+		
+		while(status != BibliothekUseCase.BEENDEN) {
+		/*	
+			switch (status) {  ALTE LÖSUNG ZUM VERGLEICH
+				case START_MENU -> {
 					
 					switch (zustand) {
-					case ENTRY:
+					case ENTRY ->{
 						System.out.println("Hallo, willkommen!");
 						status = start.start();
 						zustand = ZustandUseCase.ENTRY;
-						break;
+						}
 					
-					case DO:
+					case DO -> {
 						
 						zustand = ZustandUseCase.EXIT;
-						break;
+						}
 						
-					case EXIT:
+					case EXIT -> {
 						zustand = ZustandUseCase.ENTRY;
-						break;
+						}
 					}
-					break;
+				}
 				
 				
-				case GAST_MENU:
+				case GAST_MENU -> {
 					
 					switch(zustand) {
-					case ENTRY:
+					case ENTRY -> {
 						System.out.println("Gastmenü erriecht");
 						status = gast.start();
 						zustand = ZustandUseCase.DO;
-						break;
+						}
 						
-					case DO:
+					case DO -> {
 						
 						zustand = ZustandUseCase.EXIT;
-						break;
+						}
 						
-					case EXIT:
+					case EXIT -> {
 						zustand = ZustandUseCase.ENTRY;
-						break;
+						}
 					}
-					break;
+				}
 				
 					
-				case MITARBEITER_MENU:
+				case MITARBEITER_MENU -> {
 					
 					switch(zustand) {
-					case ENTRY:
-						mitarbeiterMenu.start();
+					case ENTRY -> {
+						status = mitarbeiterMenu.start();
 						zustand = ZustandUseCase.DO;
-						break;
-					
-					case DO:
-						
-						zustand = ZustandUseCase.EXIT;
-						break;
-						
-					case EXIT:
-						zustand = ZustandUseCase.ENTRY;
-						break;
 					}
 					
-					break;
+					case DO -> {
+						
+						zustand = ZustandUseCase.EXIT;
+					}
+						
+					case EXIT -> {
+						zustand = ZustandUseCase.ENTRY;
+						}
+					}
+				}	
 					
-					
-				case BEENDEN:
-					
-					System.out.println("Beenden erreicht");
-					break;
-					
-					
+			case BEENDEN -> {
+					return BibliothekUseCase.BEENDEN;		
 				}
-			break;
+			}
 		}
+		return status;
+		*/
 		
+			status = switch (status) {
+		    case START_MENU -> start.start();
+		    case GAST_MENU -> gast.start();
+		    case MITARBEITER_MENU -> {
+		    	
+		    	MitarbeiterMenuCase ergebnis = mitarbeiterMenu.start();
+
+		        if (ergebnis == MitarbeiterMenuCase.ZURUCK) {
+		            status = BibliothekUseCase.START_MENU;
+		        	}
+		        yield status;
+		    	}
+		    case BEENDEN -> BibliothekUseCase.BEENDEN;
+			};
+		}
 		return status;
 	}
-
 }	
 	
 	
