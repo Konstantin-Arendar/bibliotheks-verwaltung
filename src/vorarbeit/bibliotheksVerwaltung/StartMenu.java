@@ -42,7 +42,7 @@ private BibliothekUseCase startMenu() {
 					return BibliothekUseCase.MITARBEITER_MENU;
 				}
 				
-				case "g" -> {
+				case "k" -> {
 					return BibliothekUseCase.GAST_MENU;
 				}
 				
@@ -51,7 +51,7 @@ private BibliothekUseCase startMenu() {
 					return BibliothekUseCase.BEENDEN;
 				}
 				
-				default -> System.out.println("Bitte m, g oder a!");  
+				default -> System.out.println("Bitte m, k oder a!");  
 			}
 		}
 	}

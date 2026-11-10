@@ -26,89 +26,26 @@ public class Verwaltungsprogramm {
 	public BibliothekUseCase anwendung() {
 		
 		while(status != BibliothekUseCase.BEENDEN) {
-		/*	
-			switch (status) {  ALTE LÖSUNG ZUM VERGLEICH
-				case START_MENU -> {
-					
-					switch (zustand) {
-					case ENTRY ->{
-						System.out.println("Hallo, willkommen!");
-						status = start.start();
-						zustand = ZustandUseCase.ENTRY;
-						}
-					
-					case DO -> {
-						
-						zustand = ZustandUseCase.EXIT;
-						}
-						
-					case EXIT -> {
-						zustand = ZustandUseCase.ENTRY;
-						}
-					}
-				}
-				
-				
-				case GAST_MENU -> {
-					
-					switch(zustand) {
-					case ENTRY -> {
-						System.out.println("Gastmenü erriecht");
-						status = gast.start();
-						zustand = ZustandUseCase.DO;
-						}
-						
-					case DO -> {
-						
-						zustand = ZustandUseCase.EXIT;
-						}
-						
-					case EXIT -> {
-						zustand = ZustandUseCase.ENTRY;
-						}
-					}
-				}
-				
-					
-				case MITARBEITER_MENU -> {
-					
-					switch(zustand) {
-					case ENTRY -> {
-						status = mitarbeiterMenu.start();
-						zustand = ZustandUseCase.DO;
-					}
-					
-					case DO -> {
-						
-						zustand = ZustandUseCase.EXIT;
-					}
-						
-					case EXIT -> {
-						zustand = ZustandUseCase.ENTRY;
-						}
-					}
-				}	
-					
-			case BEENDEN -> {
-					return BibliothekUseCase.BEENDEN;		
-				}
-			}
-		}
-		return status;
-		*/
-		
+			
 			status = switch (status) {
 		    case START_MENU -> start.start();
-		    case GAST_MENU -> gast.start();
-		    case MITARBEITER_MENU -> {
+		    
+		    case GAST_MENU -> {
+		    	gast.start();  
+		    	yield BibliothekUseCase.START_MENU;
 		    	
-		    	MitarbeiterMenuCase ergebnis = mitarbeiterMenu.start();
-
-		        if (ergebnis == MitarbeiterMenuCase.ZURUCK) {
-		            status = BibliothekUseCase.START_MENU;
-		        	}
-		        yield status;
 		    	}
+		    
+		    case MITARBEITER_MENU -> {
+		    	MitarbeiterMenuCase ergebnis = mitarbeiterMenu.start();
+		    	yield switch (ergebnis) {
+		    		case ANMELDEN -> BibliothekUseCase.MITARBEITER_MENU;
+		    		case REGISTRIEREN -> BibliothekUseCase.MITARBEITER_MENU;
+	            	case ZURUCK -> BibliothekUseCase.START_MENU;
+	            	default -> throw new IllegalStateException();
+		    		};
+		    	}
+		    
 		    case BEENDEN -> BibliothekUseCase.BEENDEN;
 			};
 		}
