@@ -1,94 +1,108 @@
 package vorarbeit.bibliotheksVerwaltung;
 import java.util.Scanner;
 
-public class MitarbeiterService {
-	
-	String auswahl;
-	String name;
-	int  ID;
-	String pw;
+public class MitarbeiterService extends Mitarbeiter{
 	
 	
-	
-	
-	Scanner scan = new Scanner(System.in);
-	private MitarbeiterRipository mitarbeiter = new MitarbeiterRipository();
-
-	
-	int index_name = mitarbeiter.getIndexName();
-	int index_pw = mitarbeiter.getIndexPW();
-	
-	
-	public MitarbeiterService(Scanner scan) {
-		this.scan = scan;
-	}
-	
-	public MitarbeiterService() {
+	public MitarbeiterService(String name, String pw, int id) {
+		super(name, pw, id);
 		
 	}
+	
+
+	public MitarbeiterService(Scanner scan) {
+		super(scan);
+	}
+
+
+	String auswahl;
+	
+	Scanner scan = new Scanner(System.in);
+	private MitarbeiterRepository repository = new MitarbeiterRepository();
+	
+	int id = repository.neueMitarbeiterID();
 
 	public MitarbeiterMenuCase start(String auswahl) {
 		
 		if (auswahl.equals("1")){
-			mitarbeiterAnmeldung();
+			mitarbeiterAnmeldungMenu();
 			return MitarbeiterMenuCase.DEFAULT;
 		}
 		
 		if (auswahl.equals("2")) {
-			mitarbeiterRegistrierung();
+			mitarbeiterRegistrierungMenu();
+		}
+		
+		if (auswahl.equals("3")) {
+			repository.mitarbeiterListeLöschen();
+			System.out.println("Liste gelöscht.");
+		}
+		
+		if (auswahl.equals("4")) {
+			repository.mitarbeiterListeAusgeben();
+			
 		}
 		return null;
 	}
-	
-	private MitarbeiterService mitarbeiterRegistrierung() {
+
+
+	private void mitarbeiterRegistrierungMenu() {
+		
+		int id = repository.neueMitarbeiterID();
+		
+		
 		System.out.println("Ihre Login-Daten:");
+		
 		System.out.println("Name:");
 		name = scan.nextLine();
-		mitarbeiter.mitarbeiterNameHinzufügen(name);
+		
+		
 		System.out.println("Passwort:");
 		pw = scan.nextLine();
-		mitarbeiter.mitarbeiterPasswortHinzufügen(pw);
-		return null;
 		
+		Mitarbeiter mitarbeiter = new Mitarbeiter(name , pw, id);
+		
+		
+		repository.mitarbeiterHinzufügen(mitarbeiter);
+		System.out.println("Mitarbeiter erfolgreich registriert");
 		
 	}
-
-
-	private void mitarbeiterAnmeldung() {
+	
+	
+	private void mitarbeiterAnmeldungMenu() {
+		
 		System.out.println("Ihre Login-Daten oder Z für zurück:");
 		System.out.println("Name:");
 		name = scan.nextLine();
 		System.out.println(name);
-		if (name.equals("Z")) {
+		if (name.equalsIgnoreCase("Z")) {
 			System.out.println("Z-Bedingung erreicht");
 			return;
 			}
 		
-		mitarbeiter.mitarbeiterNameSuchen(name);
+		repository.mitarbeiterSuchen(name);
+		
 		System.out.println("Passwort:");
 		pw = scan.nextLine();
-		mitarbeiter.mitarbeiterPasswortSuchen(pw);
+		if (pw.equalsIgnoreCase("Z")) {
+			System.out.println("Z-Bedingung erreicht");
+			return;
+			}
 		
-		mitarbeiterAnmelden();
-			
-	}
-	
-	public void mitarbeiterAnmelden() {
-		while(true) {
-			if (index_name == -1 || index_pw == -1) {
-				System.out.println("Unbekannter Name oder falsches Passwort.");
-				start("1");
-				
-			}
-			if(index_name == index_pw) {
-				System.out.println("Anmeldung erfolgreich. Mitarbeiter-Menü bitte implementieren.");
-				break;
-			}else {
-				System.out.println("Falsche Indexierung anscheinend.");
-				start("1");
-			}
-		}
+		
+		mitarbeiterVerifizierung(name, pw);
+		
 	}
 	
 	
+	public boolean mitarbeiterVerifizierung(String name, String pw) {
+
+	    Mitarbeiter m = repository.mitarbeiterSuchen(name);
+
+	    if (m == null) {
+	        return false;
+	    }
+
+	    return m.getPw().equals(pw);
+	}	
 }

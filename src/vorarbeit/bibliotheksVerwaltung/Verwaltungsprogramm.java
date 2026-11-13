@@ -42,6 +42,7 @@ public class Verwaltungsprogramm {
 		    		case ANMELDEN -> BibliothekUseCase.MITARBEITER_MENU;
 		    		case REGISTRIEREN -> BibliothekUseCase.MITARBEITER_MENU;
 	            	case ZURUCK -> BibliothekUseCase.START_MENU;
+	            	case TEST -> BibliothekUseCase.MITARBEITER_MENU;
 	            	default -> throw new IllegalStateException();
 		    		};
 		    	}

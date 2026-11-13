@@ -15,7 +15,7 @@ public class MitarbeiterMenu {
 
 
 	public MitarbeiterMenu() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
@@ -27,19 +27,16 @@ public class MitarbeiterMenu {
 	
 	private MitarbeiterMenuCase mitarbeiterMenu() {
 		
-		//BibliothekUseCase status = BibliothekUseCase.MITARBEITER_MENU; //Reminder for me 
-		
-		
 		MitarbeiterMenuCase menuCase;
 		String auswahl;
 		
 		
 		System.out.println("Mitarbeiter-Menü:");
-		System.out.println("(1) für anmelden, (2) für Registrierung, (3) zurück.");
-		auswahl = scan.nextLine();
+		System.out.println("(1) für anmelden, (2) für Registrierung, (3) Liste löschen, (4) Liste ausgeben, (5) zurück.");
+		
 		
 		while (true) {
-			
+			auswahl = scan.nextLine();
 			
 			menuCase = switch (auswahl) {
 			
@@ -52,11 +49,30 @@ public class MitarbeiterMenu {
 		    	yield MitarbeiterMenuCase.REGISTRIEREN;
 		    }
 		    case "3" ->  {
+		    	mitarbeiter.start(auswahl);
+		    	yield MitarbeiterMenuCase.TEST;
+		    											//3 und 4 nur für admin tests
+		    }
+		    case "4" ->  {
+		    	mitarbeiter.start(auswahl);
+		    	yield MitarbeiterMenuCase.TEST;
+		    	
+		    }
+		    case "5" ->  {
 		    	yield MitarbeiterMenuCase.ZURUCK;
 		    }
 		    
-			default -> throw new IllegalArgumentException("Unexpected value: " + auswahl);
-			};
+		    default -> null;
+		    };
+
+		    if (menuCase == null) {
+		        System.out.println("Ungültige Eingabe. Bitte erneut versuchen.");
+		        System.out.println("");
+				
+		        System.out.println("Mitarbeiter-Menü:");
+				System.out.println("(1) für anmelden, (2) für Registrierung, (3) zurück.");
+		        continue;
+		    }
 			return menuCase;
 		}
 	}

@@ -4,5 +4,6 @@ public enum MitarbeiterMenuCase {
 	DEFAULT,
 	ANMELDEN,
 	REGISTRIEREN,
-	ZURUCK
+	ZURUCK,
+	TEST
 }
